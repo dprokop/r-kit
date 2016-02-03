@@ -1,8 +1,9 @@
 'use strict'
 
 import { Component } from 'react'
+import Normalize from 'normalize.css';
 
-export default class App extends Component {
+export default class AppComponent extends Component {
     constructor () {
         super()
         this.state = {
@@ -27,7 +28,7 @@ export default class App extends Component {
     onClick () {
         this.setState({
             active: !this.state.active,
-            counter: this.state.counter+10
+            counter: this.state.counter+5
         })
     }
 }
