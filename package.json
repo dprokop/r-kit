@@ -5,13 +5,15 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack",
-    "dev:watch": "webpack -d --watch --display-error-details",
-    "serve": "echo \"test\" && webpack-dev-server --inline --hot --open --content-base dist/"
+    "dev": "export NODE_ENV=development && webpack",
+    "dev:watch": "export NODE_ENV=development && webpack -d --watch --display-error-details",
+    "dist": "export NODE_ENV=production && webpack --config webpack.prod.config.js",
+    "serve": "export NODE_ENV=development && webpack-dev-server --inline --hot --open --content-base ./"
   },
   "author": "Dominik Prokop",
   "license": "MIT",
   "dependencies": {
+    "normalize.css": "^3.0.3",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "redux": "^3.1.6"
