@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var path = require('path');
-var webpack = require('webpack');
-var autoprefixer = require('autoprefixer');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var path = require('path')
+var webpack = require('webpack')
+var autoprefixer = require('autoprefixer')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 var env = {
     DEV: 'development',
@@ -17,9 +17,9 @@ var defaultOptions = {
 
 module.exports = function (options) {
 
-    var settings = Object.assign({}, defaultOptions, options);
-    var stylesETP = new ExtractTextPlugin('main.css', {allChunks: true});
-    var vendorStylesETP = new ExtractTextPlugin('vendors.css', {allChunks: true});
+    var settings = Object.assign({}, defaultOptions, options)
+    var stylesETP = new ExtractTextPlugin('main.css', {allChunks: true})
+    var vendorStylesETP = new ExtractTextPlugin('vendors.css', {allChunks: true})
 
 
     var jsLoaders = [
@@ -36,18 +36,25 @@ module.exports = function (options) {
         }
     ]
 
+    var cssLoader = 'css-loader?' +
+        (settings.minify ? 'minimize&importLoaders=1' : '&importLoaders=1')
+
+    var postcssLoader = '!postcss-loader'
+    var sassLoader = '!sass-loader?'
+
+
     var styleLoaders = [
         {
             test: /main.scss$/,
-            loader: settings.env === env.DEV ? 'style-loader!css-loader?sourceMap&importLoaders=1!postcss-loader!sass-loader?sourceMap' : stylesETP.extract('style-loader', 'css-loader?minimize&importLoaders=1!postcss-loader!sass-loader'),
+            loader: settings.extractCss ? stylesETP.extract('style-loader', cssLoader+postcssLoader+sassLoader) : 'style-loader!'+cssLoader+postcssLoader+sassLoader,
         },
         {
             test: /(node_modules)*\.(css)$/,
-            loader: settings.env === env.DEV ? 'style-loader!css-loader' : vendorStylesETP.extract('style-loader', 'css-loader?minimize'),
+            loader: settings.extractCss ? vendorStylesETP.extract('style-loader', cssLoader) : 'style-loader'+cssLoader,
         },
     ]
 
-    var plugins = (settings.env === env.DEV ? [] : [stylesETP, vendorStylesETP])
+    var plugins = (settings.extractCss ? [stylesETP, vendorStylesETP] : [])
 
     if(settings.uglify) {
         plugins.push(new webpack.optimize.UglifyJsPlugin({
@@ -55,7 +62,7 @@ module.exports = function (options) {
             mangle: {
                 except: settings.uglifyMangleExcept ? settings.uglifyMangleExcept : []
             }
-        }));
+        }))
     }
 
     return {
@@ -82,11 +89,16 @@ module.exports = function (options) {
 
         resolve: {
             extensions: ['', '.js', '.jsx'],
-            root: [path.resolve(__dirname, 'src')]
+            root: [path.resolve(__dirname, 'src')],
+            alias: {
+                areas: 'app/areas',
+                common: 'app/common',
+                components: 'app/components'
+            }
         },
 
         postcss: [autoprefixer({browsers: settings.autoprefixerBrowsers})],
 
         plugins: plugins,
-    };
-};
+    }
+}
