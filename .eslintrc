@@ -36,7 +36,8 @@
     "key-spacing": [2, {"beforeColon": false, "afterColon": true}],
     "space-before-function-paren": 2,
     "no-spaced-func": 2,
-    "array-bracket-spacing" : 2
+    "array-bracket-spacing" : 2,
+    "semi": [2, "never"]
   },
   "env": {
     "browser": true,
