@@ -76,7 +76,7 @@ module.exports = function (options) {
         },
 
         output: {
-            path: path.resolve(__dirname, 'dist/'),
+            path: path.resolve(__dirname, '../dist/'),
             filename: '[name].bundle.js',
             publicPath: '/dist/'
         },
@@ -89,7 +89,7 @@ module.exports = function (options) {
 
         resolve: {
             extensions: ['', '.js', '.jsx'],
-            root: [path.resolve(__dirname, 'src')],
+            root: [path.resolve(__dirname, '../src')],
             alias: {
                 areas: 'app/areas',
                 common: 'app/common',
