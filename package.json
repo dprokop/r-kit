@@ -9,7 +9,8 @@
     "dev": "rm -rf ./dist && export NODE_ENV=development && webpack --config config/webpack.config.js",
     "dev:watch": "export NODE_ENV=development && webpack -d --watch --display-error-details",
     "dist": "rm -rf ./dist && export NODE_ENV=production && webpack --config config/webpack.prod.config.js",
-    "serve": "export NODE_ENV=development && webpack-dev-server --inline --hot --open --content-base ./"
+    "serve": "export NODE_ENV=development && webpack-dev-server --inline --hot --open --content-base ./ --config config/webpack.config.js",
+    "docs": "jsdoc --configure config/jsdoc.config.json --verbose"
   },
   "author": "Dominik Prokop",
   "license": "MIT",
@@ -33,11 +34,13 @@
     "eslint-loader": "^1.2.1",
     "expose-loader": "^0.7.1",
     "jasmine": "^2.4.1",
+    "jsdoc": "^3.4.0",
     "karma": "^0.13.19",
     "karma-jasmine": "^0.3.6",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.7.0",
+    "minami": "^1.1.1",
     "node-sass": "^3.4.2",
     "phantomjs-prebuilt": "^2.1.4",
     "postcss-loader": "^0.8.0",
