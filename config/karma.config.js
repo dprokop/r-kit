@@ -28,7 +28,7 @@ module.exports = function (config) {
                 loaders: [
                     {
                         test: /\.js$/,
-                        loader: 'babel-loader?presets[]=react,presets[]=es2015!eslint-loader'
+                        loader: 'babel-loader?presets[]=react,presets[]=es2015!eslint-loader?fix'
                     },
                     {
                         test: require.resolve('react'),
