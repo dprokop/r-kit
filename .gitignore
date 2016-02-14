@@ -2,6 +2,8 @@
 *.sublime-workspace
 dist
 dist/*
+docs
+docs/*
 *.log
 *.log.?
 *log-file.txt
