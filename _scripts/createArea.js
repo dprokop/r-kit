@@ -8,7 +8,7 @@ var _ = require('underscore')
 
 const areaNameRegex = new RegExp('^[a-zA-Z]+$')
 const areasDir = process.cwd() + '/src/app/areas'
-const templatesDir = process.cwd()+'/build/.templates'
+const templatesDir = process.cwd()+'/_scripts/.templates'
 
 var areasToCreate = _.uniq(process.argv.slice(2))
 var areasPromises = []
