@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 'use strict'
 
 var fs = require('fs')
@@ -7,8 +8,8 @@ var colors = require('colors')
 var _ = require('underscore')
 
 const areaNameRegex = new RegExp('^[a-zA-Z]+$')
-const areasDir = process.cwd() + '/src/app/areas'
 const templatesDir = process.cwd()+'/_scripts/.templates'
+const areasDir = process.cwd() + '/src/app/areas'
 
 var areasToCreate = _.uniq(process.argv.slice(2))
 var areasPromises = []
@@ -23,9 +24,9 @@ areasToCreate.forEach(function (areaName) {
 
 Promise.all(areasPromises).then(function (results){
     results.forEach(function (result, i){
-        console.log(colors.cyan.bold('Created area: ', areasToCreate[i]))
+        console.log(colors.cyan.bold('✔  Created area: ', areasToCreate[i]))
         result.forEach(function (file) {
-            console.log(colors.green('  +'), file)
+            console.log(colors.green('   +'), file)
         })
     })
 })
@@ -41,12 +42,12 @@ function dirExists (filePath) {
 function canCreateArea (areaName) {
     if(areaNameRegex.test(areaName.split('/').pop())){
         if(dirExists(areaName)){
-            console.log(colors.red('Skipping ', areaName,', area already exists'))
+            console.log(colors.yellow('!  Skipping', colors.bold(areaName.split('/').pop()),', area already exists'))
             return false
         }
         return true
     }else {
-        console.log(colors.red('Skipping area, wrong name: ', areaName, ', you are allowed to use letters only!!!'))
+        console.log(colors.red('!  Skipping', colors.bold(areaName.split('/').pop()), ', wrong name, you can use letters only'))
         return false
     }
 }
@@ -65,7 +66,7 @@ function createAreaDirStructure (areaName) {
         process.chdir(areasDir)
         return Promise.all(filePromises)
     } catch (e){
-        console.log(colors.red('Skipping area, wrong name: ', areaName, ', you are allowed to use letters only!!!'))
+        return false
     }
 }
 
@@ -91,5 +92,4 @@ function createFileFromTemplate (dir, filename, templateName, templateData){
             })
         })
     })
-
 }
