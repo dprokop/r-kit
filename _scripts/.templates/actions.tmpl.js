@@ -24,7 +24,7 @@ export const ACTION_NAME = 'ACTION_NAME'
  * [Action name] action creator
  * @todo Implement action creator
  * @param {[type]} payload [description]
- * @return {@link _ACTION_NAME} action object
+ * @return {@link ACTION_NAME} action object
  */
 export function actionName (payload) {
     return {
