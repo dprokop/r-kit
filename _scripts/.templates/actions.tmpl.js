@@ -4,8 +4,9 @@
 =              Action types             =
 =======================================*/
 /**
+ * @todo Define action types for this area
+ *
  * [Action name] action type
- * @todo Define AREA NAME action types
  * @constant
  * @type {[type]}
  */
@@ -21,8 +22,9 @@ export const ACTION_NAME = 'ACTION_NAME'
 /** @module <%= areaName %>/actions */
 
 /**
+ * @todo Implement action creators for this area
+ *
  * [Action name] action creator
- * @todo Implement action creator
  * @param {[type]} payload [description]
  * @return {@link ACTION_NAME} action object
  */

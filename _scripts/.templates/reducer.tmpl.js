@@ -5,8 +5,10 @@
 import * as <%= areaName %>Actions from './actions'
 
 /**
+ * @todo Update state type and default value to reflect your model
+ * @todo Implement reducer
+ *
  * <%= (areaName[0].toUpperCase() + areaName.slice(1)) %> reducer
- * @todo Update state type and implement reducer
  * @param  {[type]}  state  - current state to be reduced
  * @param  {Object} action - action to be performed on current state
  * @param  {string} action.type - {@link ACTION_NAME|ACTION_NAME}, ...
