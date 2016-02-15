@@ -10,8 +10,9 @@
     "dev:watch": "export NODE_ENV=development && webpack -d --watch --display-error-details",
     "dist": "rm -rf ./dist && export NODE_ENV=production && webpack --config _config/webpack.prod.config.js",
     "serve": "export NODE_ENV=development && webpack-dev-server --inline --hot --open --content-base ./ --config _config/webpack.config.js",
-    "docs": "jsdoc --configure _config/jsdoc.config.json --verbose",
-    "create:area": "node _scripts/createArea.js"
+    "docs": "node _scripts/verifyAreas.js && jsdoc --configure _config/jsdoc.config.json --verbose",
+    "areas:create": "node _scripts/createArea.js",
+    "areas:verify": "node _scripts/verifyAreas.js"
   },
   "author": "Dominik Prokop",
   "license": "MIT",
