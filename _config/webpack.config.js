@@ -5,5 +5,5 @@ module.exports = require('./get-webpack-config')({
     devtool: 'inline-source-map',
     uglify: false,
     extractCss: true,
-    minify: true
+    minify: false
 })

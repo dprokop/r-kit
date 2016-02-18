@@ -37,10 +37,13 @@ module.exports = function (options) {
     ]
 
     var cssLoader = 'css-loader?' +
-        (settings.minify ? 'minimize&importLoaders=1' : '&importLoaders=1')
+        (settings.minify ? 'minimize&importLoaders=1' : '&importLoaders=1') +
+        (settings.devtool.indexOf('source-map')>-1 ? '&sourceMap' : '')
+
+    console.log(cssLoader)
 
     var postcssLoader = '!postcss-loader'
-    var sassLoader = '!sass-loader?'
+    var sassLoader = '!sass-loader?sourceMap'
 
 
     var styleLoaders = [
