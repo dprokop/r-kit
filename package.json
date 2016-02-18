@@ -17,9 +17,11 @@
   "author": "Dominik Prokop",
   "license": "MIT",
   "dependencies": {
+    "material-design-lite": "^1.1.1",
     "normalize.css": "^3.0.3",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
+    "react-redux": "^4.4.0",
     "redux": "^3.1.6",
     "underscore": "^1.8.3"
   },
