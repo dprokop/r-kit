@@ -40,8 +40,6 @@ module.exports = function (options) {
         (settings.minify ? 'minimize&importLoaders=1' : '&importLoaders=1') +
         (settings.devtool.indexOf('source-map')>-1 ? '&sourceMap' : '')
 
-    console.log(cssLoader)
-
     var postcssLoader = '!postcss-loader'
     var sassLoader = '!sass-loader?sourceMap'
 
@@ -96,7 +94,8 @@ module.exports = function (options) {
             alias: {
                 areas: 'app/areas',
                 common: 'app/common',
-                components: 'app/components'
+                components: 'app/components',
+                services: 'app/common/services'
             }
         },
 
