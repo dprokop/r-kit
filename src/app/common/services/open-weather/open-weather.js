@@ -14,6 +14,7 @@ class WeatherService {
     }
 
     getWeatherForCity (city) {
+        console.log(`Fetching ${city} weather`)
         var query = {}
 
         if(!(typeof city === 'string' || typeof city === 'number')) {
@@ -39,11 +40,10 @@ class WeatherService {
             })
         }).then(function (response) {
             if (response.status >= 400) {
-                throw new Error('Bad response from server')
+                throw new Error(`OpenWeather API returned error code: ${response.status}`)
+            }else{
+                return response.json()
             }
-
-            return response.json()
-
         })
     }
 
