@@ -13,8 +13,10 @@ export default Services
 export function bootServices (config) {
     Object.keys(config).forEach( key => {
         if(Services[key]){
-            console.log(`\tBooting up ${key} service`)
-            Services[key].boot(config[key])
+            if(config[key].enabled) {
+                console.log(`\tBooting up ${key} service`)
+                Services[key].boot(config[key])
+            }
         } else {
             throw new Error(`${key} service is not defined`)
         }
