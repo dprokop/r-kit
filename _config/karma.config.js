@@ -36,6 +36,16 @@ module.exports = function (config) {
                     }
                 ]
             },
+            resolve: {
+                extensions: ['', '.js', '.jsx'],
+                root: [path.resolve(__dirname, '../src')],
+                alias: {
+                    areas: 'app/areas',
+                    common: 'app/common',
+                    components: 'app/components',
+                    services: 'app/common/services'
+                }
+            }
         },
         webpackMiddleware: {
             noInfo: true
