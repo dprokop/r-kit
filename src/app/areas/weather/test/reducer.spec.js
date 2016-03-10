@@ -9,14 +9,18 @@ import { weather } from '../reducer'
 describe('Weather reducer', function () {
     var stateBefore
     var timestamp = Date.now()
+
     beforeEach(function () {
         stateBefore = {
-            channels: [1, 2, 5],
+            channels: [1, 2, 5, 9],
             currentWeather: {
                 1: {
                     isLoading: false,
                 },
                 2: {
+                    isLoading: true,
+                },
+                9: {
                     isLoading: true,
                 }
             },
@@ -26,12 +30,15 @@ describe('Weather reducer', function () {
 
     it('should set isLoading to truthy when requesting weather for given id', function (){
         var stateAfter = {
-            channels: [1,2,5],
+            channels: [1,2,5,9],
             currentWeather: {
                 1: {
                     isLoading: true,
                 },
                 2: {
+                    isLoading: true,
+                },
+                9: {
                     isLoading: true,
                 }
             },
@@ -54,12 +61,15 @@ describe('Weather reducer', function () {
 
     it('should add new channel if it doesn\'t exist and set its isLoading state to truthy', function (){
         var stateAfter = {
-            channels: [1,2,5,3],
+            channels: [1,2,5,9,3],
             currentWeather: {
                 1: {
                     isLoading: false,
                 },
                 2: {
+                    isLoading: true,
+                },
+                9: {
                     isLoading: true,
                 },
                 3: {
@@ -85,7 +95,7 @@ describe('Weather reducer', function () {
 
     it('should set isLoading to falsy and payload to received data for the requested id', function (){
         var stateAfter = {
-            channels: [1,2,5],
+            channels: [1,2,5,9],
             currentWeather: {
                 1: {
                     isLoading: false,
@@ -95,6 +105,9 @@ describe('Weather reducer', function () {
                     data: {
                         id: 2
                     }
+                },
+                9: {
+                    isLoading: true,
                 }
             },
             lastRefreshed: timestamp
@@ -115,9 +128,9 @@ describe('Weather reducer', function () {
         expect(result).toEqual(stateAfter)
     })
 
-    it('should remove id from channels if wrong id provided', function (){
+    it('should remove id from channels and data from currentWeather if wrong id provided', function (){
         var stateAfter = {
-            channels: [1, 2],
+            channels: [1, 2, 5],
             currentWeather: {
                 1: {
                     isLoading: false,
@@ -136,7 +149,7 @@ describe('Weather reducer', function () {
             payload: {
                 cod: 404,
                 message: 'Error message',
-                id: 5
+                id: 9
             }
         }
 
@@ -144,7 +157,5 @@ describe('Weather reducer', function () {
 
         expect(result).toEqual(stateAfter)
     })
-
-
 
 })

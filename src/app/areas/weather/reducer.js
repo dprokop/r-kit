@@ -3,6 +3,7 @@
 'use strict'
 
 import * as weatherActions from './actions'
+import _ from 'underscore'
 
 /**
  * @todo Update state type and default value to reflect your model
@@ -23,6 +24,7 @@ var defaultState = {
 
 export function weather (state = defaultState, action) {
     var payload = action.payload
+
     switch (action.type) {
     case weatherActions.REQUEST_WEATHER:
         var channels = state.channels.indexOf(payload.channel) < 0 ? state.channels.slice().concat(payload.channel) : state.channels.slice()
@@ -45,7 +47,11 @@ export function weather (state = defaultState, action) {
                 channels: state.channels.filter( channel => { return channel!==payload.id } )
             })
 
-            return(Object.assign(nextState, { currentWeather: state.currentWeather, lastRefreshed: state.lastRefreshed }))
+            return Object.assign({}, {
+                channels: _.without( state.channels, payload.id),
+                currentWeather: _.omit(state.currentWeather, payload.id.toString()),
+                lastRefreshed: state.lastRefreshed
+            })
         }else{
 
             var nextWeather = Object.assign({}, state.currentWeather)
@@ -62,8 +68,7 @@ export function weather (state = defaultState, action) {
         }
 
     case weatherActions.FAILED_RECEIVING_WEATHER_DATA:
-        var nextState = Object.assign({}, state.currentWeather)
-        nextState[payload.channel].isLoading = false
+        var nextState = Object.assign({}, _.omit(state.currentWeather, payload.channel.toString()))
 
         return Object.assign({}, state, {
             currentWeather: nextState
@@ -72,3 +77,4 @@ export function weather (state = defaultState, action) {
         return state
     }
 }
+
