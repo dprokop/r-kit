@@ -9,7 +9,7 @@ import { addTodo } from 'areas/todos/actions'
 
 var app = new App()
 
-ReactDOM.render(<AppComponent />, document.getElementById('appRoot'))
+ReactDOM.render(<AppComponent store={app.store}/>, document.getElementById('appRoot'))
 
 
 
