@@ -1,47 +1,34 @@
 'use strict'
 
 import { Component } from 'react'
+import Services from 'services'
+import fetch from 'isomorphic-fetch'
+import _ from 'underscore'
+import { connect } from 'react-redux'
 
 
-var WeatherProvider = Composed => class extends Component {
+const mapStateToProps = (state) => {
+    return {
+        weather: state.weather
+    }
+}
+
+var WeatherProvider = Composed => connect(mapStateToProps)(class WeatherProvider extends Component {
     constructor () {
         super()
-        this.state = {
-            channels: [
-                {
-                    id: 3085041,
-                    title: 'Kraków',
-                    summary: 'Rainy'
-                }
-            ]
-        }
-
-        this.refreshChannel = this.refreshChannel.bind(this)
-        this.refreshChannels = this.refreshChannels.bind(this)
-    }
-
-    componentDidMount () {
-        /**
-         * @todo fetch data
-         */
     }
 
     render () {
         return (
             <Composed
-                channels = {this.state.channels}
-                onRefresh = {this.refreshChannels}
-                onChannelRefresh = {this.refreshChannel} />
+                channelsData={this.props.weather.currentWeather}
+                onRefresh={this.props.onRefresh}
+                onChannelRefresh={this.props.onChannelRefresh}
+            />
         )
     }
 
-    refreshChannels () {
-        console.log('Refreshing channels...')
-    }
-
-    refreshChannel (id) {
-        console.log('Refreshing channel:', id)
-    }
-}
+})
 
 export default WeatherProvider
+
