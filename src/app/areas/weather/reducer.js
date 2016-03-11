@@ -40,18 +40,12 @@ export function weather (state = defaultState, action) {
         }
 
         return Object.assign({ }, {
-            channels: state.channels,
+            channels: _.union(state.channels, [payload.channel]),
             currentWeather: nextWeather,
             lastRefreshed: state.lastRefreshed
         })
     }
-    case weatherActions.FETCH_WEATHER: {
-        return Object.assign({}, {
-            channels: _.union(state.channels, [payload.channel]),
-            currentWeather: state.currentWeather,
-            lastRefreshed: state.lastRefreshed
-        })
-    }
+
     case weatherActions.RECEIVED_WEATHER_DATA: {
         let nextState = {}
 

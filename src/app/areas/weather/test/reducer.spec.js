@@ -58,36 +58,7 @@ describe('Weather reducer', function () {
         expect(result).toEqual(stateAfter)
     })
 
-    it('adds new channel to channels list if it doesn\'t exist', function () {
-        var stateAfter = {
-            channels: [1,2,5,9,3],
-            currentWeather: {
-                1: {
-                    isLoading: false,
-                },
-                2: {
-                    isLoading: true,
-                },
-                9: {
-                    isLoading: true,
-                }
-            },
-            lastRefreshed: timestamp
-        }
 
-        deepFreeze(stateBefore)
-
-        var action = {
-            type: 'FETCH_WEATHER',
-            payload: {
-                channel: 3
-            }
-        }
-
-        var result = weather(stateBefore, action)
-
-        expect(result).toEqual(stateAfter)
-    })
 
     it('sets new channel\'s isLoading state to true when data requested', function (){
         var stateAfter = {
@@ -117,6 +88,7 @@ describe('Weather reducer', function () {
         var result = weather(stateBefore, action)
 
         expect(result.currentWeather).toEqual(stateAfter)
+        expect(result.channels).toEqual([1,2,5,9,3])
     })
 
     it('sets loading state to false for given , payload to received data ', function (){
