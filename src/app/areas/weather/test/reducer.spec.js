@@ -3,7 +3,6 @@
 'use strict'
 
 import deepFreeze from 'deep-freeze'
-
 import { weather } from '../reducer'
 
 describe('Weather reducer', function () {
@@ -28,7 +27,7 @@ describe('Weather reducer', function () {
         }
     })
 
-    it('should set isLoading to truthy when requesting weather for given id', function (){
+    it('set loading state to true when requesting data for given id', function (){
         var stateAfter = {
             channels: [1,2,5,9],
             currentWeather: {
@@ -59,7 +58,7 @@ describe('Weather reducer', function () {
         expect(result).toEqual(stateAfter)
     })
 
-    it('should add new channel to channels list if it doesn\'t exist', function () {
+    it('adds new channel to channels list if it doesn\'t exist', function () {
         var stateAfter = {
             channels: [1,2,5,9,3],
             currentWeather: {
@@ -90,7 +89,7 @@ describe('Weather reducer', function () {
         expect(result).toEqual(stateAfter)
     })
 
-    it('should set new channel\'s isLoading state to truthy when data requested', function (){
+    it('sets new channel\'s isLoading state to true when data requested', function (){
         var stateAfter = {
             1: {
                 isLoading: false,
@@ -120,7 +119,7 @@ describe('Weather reducer', function () {
         expect(result.currentWeather).toEqual(stateAfter)
     })
 
-    it('should set isLoading to falsy and payload to received data for the requested id', function (){
+    it('sets loading state to false for given , payload to received data ', function (){
         var stateAfter = {
             channels: [1,2,5,9],
             currentWeather: {
@@ -151,11 +150,10 @@ describe('Weather reducer', function () {
 
         var result = weather(stateBefore, action)
         result.lastRefreshed = timestamp
-
         expect(result).toEqual(stateAfter)
     })
 
-    it('should remove id from channels and data from currentWeather if wrong id provided', function (){
+    it('removes id from channels and data from currentWeather if wrong id provided', function (){
         var stateAfter = {
             channels: [1, 2, 5],
             currentWeather: {

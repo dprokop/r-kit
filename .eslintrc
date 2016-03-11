@@ -37,7 +37,9 @@
     "space-before-function-paren": 2,
     "no-spaced-func": 2,
     "array-bracket-spacing" : 2,
-    "semi": [2, "never"]
+    "semi": [2, "never"],
+    "max-len": [1, 100, 4, {"ignoreComments":true, "ignoreUrls": true, "ignorePattern" : ^\s*it\('* }],
+    "no-case-declarations": 2
   },
   "env": {
     "browser": true,
