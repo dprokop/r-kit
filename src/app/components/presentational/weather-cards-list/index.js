@@ -22,7 +22,9 @@ var WeatherCardsList = ({ channelsData, onChannelRefresh, onRefresh }) => {
 
     return (
         <div>
-            <button onClick={ () => onRefresh() } className="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
+            <button
+                onClick={ () => onRefresh() }
+                className="mdl-button mdl-button--fab mdl-button--colored">
                 <i className="material-icons">Refresh</i>
             </button>
             {cards}
