@@ -27,7 +27,6 @@ export function weather (state = defaultState, action) {
 
     switch (action.type) {
     case weatherActions.REQUEST_WEATHER:
-        var channels = state.channels.indexOf(payload.channel) < 0 ? state.channels.slice().concat(payload.channel) : state.channels.slice()
         var nextWeather = Object.assign({}, state.currentWeather)
 
         if(!state.currentWeather[payload.channel]){
@@ -36,11 +35,19 @@ export function weather (state = defaultState, action) {
             nextWeather[payload.channel] = Object.assign({}, nextWeather[payload.channel], { isLoading: true })
         }
 
-        return Object.assign({ channels: channels }, { currentWeather: nextWeather, lastRefreshed: state.lastRefreshed})
+        return Object.assign({ }, {
+            channels: state.channels,
+            currentWeather: nextWeather,
+            lastRefreshed: state.lastRefreshed
+        })
 
     case weatherActions.FETCH_WEATHER:
+        return Object.assign({}, {
+            channels: _.union(state.channels, [payload.channel]),
+            currentWeather: state.currentWeather,
+            lastRefreshed: state.lastRefreshed
+        })
 
-        break
     case weatherActions.RECEIVED_WEATHER_DATA:
         if (payload.cod && parseInt(payload.cod) === 404) {
             var nextState = Object.assign({}, {
@@ -77,4 +84,3 @@ export function weather (state = defaultState, action) {
         return state
     }
 }
-
