@@ -14,7 +14,12 @@ var WeatherCardsList = ({ channelsData, onChannelRefresh, onRefresh }) => {
             card = <WeatherCard isLoading key={key} />
         }else {
             data = channelsData[key].data
-            card = <WeatherCard id={data.id} title={data.name} key={data.id} />
+            card = <WeatherCard
+                id={data.id}
+                title={data.name}
+                key={data.id}
+                onRefresh={ () => onChannelRefresh(data.id) }
+            />
         }
 
         return card
@@ -23,7 +28,7 @@ var WeatherCardsList = ({ channelsData, onChannelRefresh, onRefresh }) => {
     return (
         <div>
             <button
-                onClick={ () => onRefresh() }
+                onClick={ onRefresh }
                 className="mdl-button mdl-button--fab mdl-button--colored">
                 <i className="material-icons">Refresh</i>
             </button>

@@ -24,7 +24,7 @@ var WeatherCard = ({isLoading, title, summary, onRefresh}) => {
                 </div>
                 <div className="mdl-card__actions mdl-card--border">
                     <a
-                        onClick={ () => onRefresh() }
+                        onClick={ onRefresh }
                         className="mdl-button mdl-button--colored">
                       Refresh
                     </a>

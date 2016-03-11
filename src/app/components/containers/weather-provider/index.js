@@ -5,7 +5,7 @@ import Services from 'services'
 import fetch from 'isomorphic-fetch'
 import _ from 'underscore'
 import { connect } from 'react-redux'
-
+import { fetchWeather, refreshChannels } from 'areas/weather/actions'
 
 const mapStateToProps = (state) => {
     return {
@@ -13,22 +13,29 @@ const mapStateToProps = (state) => {
     }
 }
 
-var WeatherProvider = Composed => connect(mapStateToProps)(class WeatherProvider extends Component {
-    constructor () {
-        super()
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onChannelRefresh: (id) => dispatch(fetchWeather(id)),
+        onRefresh: (channelIds) => { dispatch(refreshChannels(channelIds)) }
     }
+}
 
-    render () {
-        return (
-            <Composed
-                channelsData={this.props.weather.currentWeather}
-                onRefresh={this.props.onRefresh}
-                onChannelRefresh={this.props.onChannelRefresh}
-            />
-        )
-    }
+var WeatherProvider = Composed => connect(mapStateToProps, mapDispatchToProps)(
+    class WeatherProvider extends Component {
+        constructor () {
+            super()
+        }
+        render () {
+            return (
+                <Composed
+                    channelsData={this.props.weather.currentWeather}
+                    onChannelRefresh={this.props.onChannelRefresh}
+                    onRefresh={ () => this.props.onRefresh(this.props.weather.channels) }
+                />
+            )
+        }
 
-})
+}
+)
 
 export default WeatherProvider
-

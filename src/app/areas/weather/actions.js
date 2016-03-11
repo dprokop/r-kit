@@ -2,6 +2,7 @@
 
 import fetch from 'isomorphic-fetch'
 import Services from 'services'
+import _ from 'underscore'
 
 /*=======================================
 =              Action types             =
@@ -102,6 +103,19 @@ export function failedReceivingWeatherData (channel, error) {
             channel: channel,
             error: error
         }
+    }
+}
+
+/**
+ * REFRESH_CHANNELS action creator
+ * @return {@link REFRESH_CHANNELS} action object
+ */
+export function refreshChannels (channels) {
+    return dispatch => {
+        _.each(channels, (id) => {
+            console.log(id)
+            dispatch(fetchWeather(id))
+        })
     }
 }
 
