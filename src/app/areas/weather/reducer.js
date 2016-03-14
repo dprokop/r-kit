@@ -1,7 +1,5 @@
 /** @module weather/reducer */
 
-'use strict'
-
 import * as weatherActions from './actions'
 import _ from 'underscore'
 
@@ -17,66 +15,66 @@ import _ from 'underscore'
  */
 
 var defaultState = {
-    channels: [],
-    currentWeather: {},
-    lastRefreshed: null
+  channels: [],
+  currentWeather: {},
+  lastRefreshed: null
 }
 
 export function weather (state = defaultState, action) {
-    var payload = action.payload
+  var payload = action.payload
 
-    switch (action.type) {
+  switch (action.type) {
     case weatherActions.REQUEST_WEATHER: {
-        let nextWeather = Object.assign({}, state.currentWeather)
+      let nextWeather = Object.assign({}, state.currentWeather)
 
-        if(!state.currentWeather[payload.channel]){
-            nextWeather[payload.channel] = { isLoading: true }
-        }else {
-            nextWeather[payload.channel] = Object.assign(
+      if (!state.currentWeather[payload.channel]) {
+        nextWeather[payload.channel] = { isLoading: true }
+      } else {
+        nextWeather[payload.channel] = Object.assign(
                         {},
                         nextWeather[payload.channel],
                         { isLoading: true }
                     )
-        }
+      }
 
-        return Object.assign({ }, {
-            channels: _.union(state.channels, [payload.channel]),
-            currentWeather: nextWeather,
-            lastRefreshed: state.lastRefreshed
-        })
+      return Object.assign({ }, {
+        channels: _.union(state.channels, [payload.channel]),
+        currentWeather: nextWeather,
+        lastRefreshed: state.lastRefreshed
+      })
     }
 
     case weatherActions.RECEIVED_WEATHER_DATA: {
-        let nextState = {}
+      let nextState = {}
 
-        if (payload.cod && parseInt(payload.cod) === 404) {
-            nextState = {
-                channels: _.without( state.channels, payload.id),
-                currentWeather: _.omit(state.currentWeather, payload.id.toString()),
-                lastRefreshed: state.lastRefreshed
-            }
-        }else{
-            var nextWeather = Object.assign({}, state.currentWeather)
-            nextWeather[payload.id] = Object.assign({},{
-                isLoading: false,
-                data: payload
-            })
-            nextState = {
-                channels: state.channels.slice(0),
-                currentWeather: nextWeather,
-                lastRefreshed: Date.now()
-            }
+      if (payload.cod && parseInt(payload.cod) === 404) {
+        nextState = {
+          channels: _.without(state.channels, payload.id),
+          currentWeather: _.omit(state.currentWeather, payload.id.toString()),
+          lastRefreshed: state.lastRefreshed
         }
-        return Object.assign({}, nextState)
+      } else {
+        var nextWeather = Object.assign({}, state.currentWeather)
+        nextWeather[payload.id] = Object.assign({}, {
+          isLoading: false,
+          data: payload
+        })
+        nextState = {
+          channels: state.channels.slice(0),
+          currentWeather: nextWeather,
+          lastRefreshed: Date.now()
+        }
+      }
+      return Object.assign({}, nextState)
     }
     case weatherActions.FAILED_RECEIVING_WEATHER_DATA: {
-        var nextState = Object.assign({}, _.omit(state.currentWeather, payload.channel.toString()))
+      var nextState = Object.assign({}, _.omit(state.currentWeather, payload.channel.toString()))
 
-        return Object.assign({}, state, {
-            currentWeather: nextState
-        })
+      return Object.assign({}, state, {
+        currentWeather: nextState
+      })
     }
     default:
-        return state
-    }
+      return state
+  }
 }

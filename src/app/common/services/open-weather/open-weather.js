@@ -1,60 +1,57 @@
-'use strict'
-
 import fetch from 'isomorphic-fetch'
 
 class WeatherService {
-    constructor () {
-        this.config = {
-            endpoint: 'http://api.openweathermap.org/data/2.5'
-        }
+  constructor () {
+    this.config = {
+      endpoint: 'http://api.openweathermap.org/data/2.5'
+    }
+  }
+
+  boot (config) {
+    this.config = Object.assign({}, this.config, config)
+  }
+
+  getWeatherForCity (city) {
+    console.log(`Fetching ${city} weather`)
+    var query = {}
+
+    if (!(typeof city === 'string' || typeof city === 'number')) {
+      throw new TypeError('City should be either string or number')
     }
 
-    boot (config) {
-        this.config = Object.assign({}, this.config, config)
+    if (typeof city === 'string') {
+      query = Object.assign({}, query, { q: city })
     }
 
-    getWeatherForCity (city) {
-        console.log(`Fetching ${city} weather`)
-        var query = {}
-
-        if(!(typeof city === 'string' || typeof city === 'number')) {
-            throw new TypeError('City should be either string or number')
-        }
-
-        if (typeof city === 'string') {
-            query = Object.assign({}, query, { q: city })
-        }
-
-        if (typeof city === 'number') {
-            query = Object.assign({}, query, { id: city })
-        }
-
-        return this.requestApi('weather', query)
+    if (typeof city === 'number') {
+      query = Object.assign({}, query, { id: city })
     }
 
-    requestApi (area, params) {
-        var url = this.getUrl(area, params)
-        return fetch(url, {
-            method: 'get',
-            headers: new Headers({
-            })
-        }).then(function (response) {
-            if (response.status >= 400) {
-                throw new Error(`OpenWeather API returned error code: ${response.status}`)
-            }else{
-                return response.json()
-            }
-        })
-    }
+    return this.requestApi('weather', query)
+  }
 
-    getUrl (area, params) {
-        var queryString = Object.keys(params).map( (queryKey) => {
-            return queryKey + '=' + params[queryKey]
-        }).join('&amp;')
+  requestApi (area, params) {
+    var url = this.getUrl(area, params)
+    return fetch(url, {
+      method: 'get',
+      headers: new Headers({
+      })
+    }).then(function (response) {
+      if (response.status >= 400) {
+        throw new Error(`OpenWeather API returned error code: ${response.status}`)
+      } else {
+        return response.json()
+      }
+    })
+  }
 
-        return `${this.config.endpoint}/${area}?${queryString}&appid=${this.config.appId}`
-    }
+  getUrl (area, params) {
+    var queryString = Object.keys(params).map((queryKey) => {
+      return queryKey + '=' + params[queryKey]
+    }).join('&amp;')
+
+    return `${this.config.endpoint}/${area}?${queryString}&appid=${this.config.appId}`
+  }
 }
-
 
 export default WeatherService

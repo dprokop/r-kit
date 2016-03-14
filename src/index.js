@@ -1,5 +1,3 @@
-'use strict'
-
 import ReactDOM from 'react-dom'
 import Styles from 'styles/main.scss'
 import MDLStyles from 'material-design-lite/material.css'

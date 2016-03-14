@@ -1,17 +1,15 @@
-/*global Raven*/
-'use strict'
+/* global Raven */
 
 class WeatherService {
-    constructor () {
-        this.config = {}
-    }
+  constructor () {
+    this.config = {}
+  }
 
-    boot (config) {
-        this.config = Object.assign({}, this.config, config)
-        Raven.config(this.config.clientUrl).install()
-    }
+  boot (config) {
+    this.config = Object.assign({}, this.config, config)
+    Raven.config(this.config.clientUrl).install()
+  }
 
 }
-
 
 export default WeatherService

@@ -1,5 +1,3 @@
-'use strict'
-
 import fetch from 'isomorphic-fetch'
 import Services from 'services'
 import _ from 'underscore'
@@ -35,8 +33,7 @@ export const RECEIVED_WEATHER_DATA = 'RECEIVED_WEATHER_DATA'
  */
 export const FAILED_RECEIVING_WEATHER_DATA = 'FAILED_RECEIVING_WEATHER_DATA'
 
-/*=====  End of Action types  ======*/
-
+/* =====  End of Action types  ======*/
 
 /*=======================================
 =            Action creators            =
@@ -50,12 +47,12 @@ export const FAILED_RECEIVING_WEATHER_DATA = 'FAILED_RECEIVING_WEATHER_DATA'
  * @return {@link REQUEST_WEATHER} action object
  */
 export function requestWeather (channel) {
-    return {
-        type: REQUEST_WEATHER,
-        payload: {
-            channel: channel
-        }
+  return {
+    type: REQUEST_WEATHER,
+    payload: {
+      channel: channel
     }
+  }
 }
 
 /**
@@ -65,18 +62,18 @@ export function requestWeather (channel) {
  * @desc This action creator is further processed by reduc-thunk middleware
  */
 export function fetchWeather (channel) {
-    return dispatch => {
-        dispatch(requestWeather(channel))
-        return Services.OpenWeather
+  return (dispatch) => {
+    dispatch(requestWeather(channel))
+    return Services.OpenWeather
                 .getWeatherForCity(channel)
-                .then( data => {
-                    dispatch(receivedWeatherData(Object.assign({}, data, {
-                        id: channel
-                    })))
-                }).catch( error => {
-                    dispatch(failedReceivingWeatherData(channel, error))
+                .then((data) => {
+                  dispatch(receivedWeatherData(Object.assign({}, data, {
+                    id: channel
+                  })))
+                }).catch((error) => {
+                  dispatch(failedReceivingWeatherData(channel, error))
                 })
-    }
+  }
 }
 
 /**
@@ -85,10 +82,10 @@ export function fetchWeather (channel) {
  * @return {@link RECEIVED_WEATHER_DATA} action object
  */
 export function receivedWeatherData (weatherData) {
-    return {
-        type: RECEIVED_WEATHER_DATA,
-        payload: weatherData
-    }
+  return {
+    type: RECEIVED_WEATHER_DATA,
+    payload: weatherData
+  }
 }
 
 /**
@@ -97,13 +94,13 @@ export function receivedWeatherData (weatherData) {
  * @return {@link FAILED_RECEIVING_WEATHER_DATA} action object
  */
 export function failedReceivingWeatherData (channel, error) {
-    return {
-        type: FAILED_RECEIVING_WEATHER_DATA,
-        payload: {
-            channel: channel,
-            error: error
-        }
+  return {
+    type: FAILED_RECEIVING_WEATHER_DATA,
+    payload: {
+      channel: channel,
+      error: error
     }
+  }
 }
 
 /**
@@ -111,12 +108,12 @@ export function failedReceivingWeatherData (channel, error) {
  * @return {@link REFRESH_CHANNELS} action object
  */
 export function refreshChannels (channels) {
-    return dispatch => {
-        _.each(channels, (id) => {
-            console.log(id)
-            dispatch(fetchWeather(id))
-        })
-    }
+  return (dispatch) => {
+    _.each(channels, (id) => {
+      console.log(id)
+      dispatch(fetchWeather(id))
+    })
+  }
 }
 
-/*=====  End of Action creators  ======*/
+/* =====  End of Action creators  ======*/

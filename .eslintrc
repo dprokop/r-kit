@@ -1,4 +1,5 @@
 {
+  "extends": "standard",
   "parser": "babel-eslint",
   "ecmaFeatures": {
     "jsx": true,
@@ -10,36 +11,10 @@
     "spread": true
   },
   "rules": {
-    "strict": [2, "global"],
-    "camelcase": 2,
-    "curly": 2,
-    "eqeqeq": 1,
-    "indent": 2,
-    "no-underscore-dangle": 0,
     "no-unused-vars": 0,
-    "no-multi-spaces": 1,
-    "key-spacing": 0,
-    "no-return-assign": 1,
-    "consistent-return": 0,
-    "no-shadow": 0,
-    "no-comma-dangle": 0,
-    "no-use-before-define": 0,
-    "no-empty": 2,
-    "new-parens": 0,
-    "no-cond-assign": 0,
-    "quotes": [2, "single", "avoid-escape"],
-    "new-cap": [0, { "newIsCap": true }],
-    "no-undef": 2,
-    "no-trailing-spaces": 2,
-    "no-extra-parens": 0,
-    "no-irregular-whitespace": 2,
-    "key-spacing": [2, {"beforeColon": false, "afterColon": true}],
-    "space-before-function-paren": 2,
-    "no-spaced-func": 2,
-    "array-bracket-spacing" : 2,
-    "semi": [2, "never"],
     "max-len": [1, 100, 4, {"ignoreComments":true, "ignoreUrls": true, "ignorePattern" : ^\s*it\('* }],
-    "no-case-declarations": 2
+    "no-case-declarations": 2,
+    spaced-comment: [2, "always", { "exceptions": ["="] }]
   },
   "env": {
     "browser": true,
