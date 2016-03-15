@@ -38,7 +38,7 @@ class WeatherService {
       })
     }).then(function (response) {
       if (response.status >= 400) {
-        throw new Error(`OpenWeather API returned error code: ${response.status}`)
+        throw new OpenWeatherError(response)
       } else {
         return response.json()
       }
@@ -51,6 +51,14 @@ class WeatherService {
     }).join('&amp;')
 
     return `${this.config.endpoint}/${area}?${queryString}&appid=${this.config.appId}`
+  }
+}
+
+export class OpenWeatherError extends Error {
+  constructor (response) {
+    super()
+    this.code = response.status
+    this.message = `OpenWeather API returned error code: ${this.code}`
   }
 }
 

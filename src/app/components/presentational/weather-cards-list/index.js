@@ -1,11 +1,12 @@
 import WeatherProvider from 'components/containers/weather-provider'
 import WeatherCard from 'components/presentational/weather-card'
+import WeatherBackground from 'components/presentational/weather-bg'
 import { PropTypes } from 'react'
 import _ from 'underscore'
 
 import Services from 'common/services'
 
-var WeatherCardsList = ({ channelsData, onChannelRefresh, onRefresh }) => {
+var WeatherCardsList = ({ children, channelsData, onChannelRefresh, onRefresh }) => {
   var cards = _.map(_.keys(channelsData), (key) => {
     var card, data
     if (channelsData[key].isLoading) {
@@ -15,7 +16,9 @@ var WeatherCardsList = ({ channelsData, onChannelRefresh, onRefresh }) => {
       card = <WeatherCard
                 id={data.id}
                 title={data.name}
+                temperature={data.main.temp}
                 key={data.id}
+                error={channelsData[key].error}
                 onRefresh={ () => onChannelRefresh(data.id) }
             />
     }
@@ -25,12 +28,8 @@ var WeatherCardsList = ({ channelsData, onChannelRefresh, onRefresh }) => {
 
   return (
         <div>
-            <button
-                onClick={ onRefresh }
-                className='mdl-button mdl-button--fab mdl-button--colored'>
-                <i className='material-icons'>Refresh</i>
-            </button>
-            {cards}
+          <WeatherBackground />
+          {cards}
         </div>
     )
 }

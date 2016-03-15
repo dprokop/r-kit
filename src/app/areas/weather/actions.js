@@ -64,15 +64,15 @@ export function requestWeather (channel) {
 export function fetchWeather (channel) {
   return (dispatch) => {
     dispatch(requestWeather(channel))
-    return Services.OpenWeather
-                .getWeatherForCity(channel)
-                .then((data) => {
-                  dispatch(receivedWeatherData(Object.assign({}, data, {
-                    id: channel
-                  })))
-                }).catch((error) => {
-                  dispatch(failedReceivingWeatherData(channel, error))
-                })
+    Services.OpenWeather
+      .getWeatherForCity(channel)
+      .then((data) => {
+        dispatch(receivedWeatherData(Object.assign({}, data, {
+          id: channel
+        })))
+      }).catch((error) => {
+        dispatch(failedReceivingWeatherData(channel, error))
+      })
   }
 }
 
@@ -110,7 +110,6 @@ export function failedReceivingWeatherData (channel, error) {
 export function refreshChannels (channels) {
   return (dispatch) => {
     _.each(channels, (id) => {
-      console.log(id)
       dispatch(fetchWeather(id))
     })
   }

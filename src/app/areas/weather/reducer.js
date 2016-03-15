@@ -68,11 +68,13 @@ export function weather (state = defaultState, action) {
       return Object.assign({}, nextState)
     }
     case weatherActions.FAILED_RECEIVING_WEATHER_DATA: {
-      var nextState = Object.assign({}, _.omit(state.currentWeather, payload.channel.toString()))
-
-      return Object.assign({}, state, {
-        currentWeather: nextState
+      var nextState = Object.assign({}, state.currentWeather)
+      nextState[payload.channel] = Object.assign({}, nextState[payload.channel], {
+        isLoading: false,
+        error: true
       })
+
+      return Object.assign({}, state, { currentWeather: nextState })
     }
     default:
       return state

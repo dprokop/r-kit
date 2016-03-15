@@ -7,7 +7,6 @@ var env = {
   DEV: 'development',
   PROD: 'production'
 }
-
 var defaultOptions = {
   env: process.env.NODE_ENV,
   autoprefixerBrowsers: ['last 2 versions']
@@ -17,6 +16,9 @@ module.exports = function (options) {
   var settings = Object.assign({}, defaultOptions, options)
   var stylesETP = new ExtractTextPlugin('main.css', {allChunks: true})
   var vendorStylesETP = new ExtractTextPlugin('vendors.css', {allChunks: true})
+  var envPlugin = new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify(defaultOptions.env)
+  })
 
   var jsLoaders = [
     {
@@ -57,6 +59,7 @@ module.exports = function (options) {
   ]
 
   var plugins = (settings.extractCss ? [stylesETP, vendorStylesETP] : [])
+  plugins.push(envPlugin)
 
   if (settings.uglify) {
     plugins.push(new webpack.optimize.UglifyJsPlugin({

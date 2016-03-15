@@ -1,9 +1,6 @@
-import { createStore, applyMiddleware } from 'redux'
-import thunkMiddleware from 'redux-thunk'
-import config from 'app/config'
-import reducers from 'app/reducers'
+import AppSettings from 'app/config/app_settings'
+import setupStore from 'app/config/store'
 import { bootServices } from 'services'
-
 import { fetchWeather } from 'areas/weather/actions'
 
 /** Class representing app */
@@ -14,18 +11,13 @@ class App {
    * @param  {Object} initialState - initial state passed to the app
    */
   constructor (initialState) {
-    this.store = createStore(reducers, initialState, applyMiddleware(thunkMiddleware))
+    this.store = setupStore({})
 
-    this.configureServices(config)
+    this.configureServices(AppSettings)
 
     setTimeout(() => {
-      this.store.dispatch(fetchWeather(666))
       this.store.dispatch(fetchWeather(3085041))
     }, 1000)
-
-    setTimeout(() => {
-      this.store.dispatch(fetchWeather(2172797))
-    }, 1500)
   }
 
   /**
@@ -33,7 +25,7 @@ class App {
    */
   configureServices () {
     console.log('Booting up services')
-    bootServices(config.services)
+    bootServices(AppSettings.services)
   }
 }
 
