@@ -25,34 +25,13 @@ export function weather (state = defaultState, action) {
 
   switch (action.type) {
     case weatherActions.REQUEST_WEATHER: {
-      let nextWeather = Object.assign({}, state.currentWeather)
-
-      if (!state.currentWeather[payload.channel]) {
-        nextWeather[payload.channel] = { isLoading: true }
-      } else {
-        nextWeather[payload.channel] = Object.assign(
-                        {},
-                        nextWeather[payload.channel],
-                        { isLoading: true }
-                    )
-      }
-
-      return Object.assign({ }, {
-        channels: _.union(state.channels, [payload.channel]),
-        currentWeather: nextWeather,
-        lastRefreshed: state.lastRefreshed
-      })
+      return Object.assign({}, state, { isLoading: true })
     }
-
     case weatherActions.RECEIVED_WEATHER_DATA: {
       let nextState = {}
 
       if (payload.cod && parseInt(payload.cod) === 404) {
-        nextState = {
-          channels: _.without(state.channels, payload.id),
-          currentWeather: _.omit(state.currentWeather, payload.id.toString()),
-          lastRefreshed: state.lastRefreshed
-        }
+        nextState = Object.assign({})
       } else {
         var nextWeather = Object.assign({}, state.currentWeather)
         nextWeather[payload.id] = Object.assign({}, {
@@ -60,21 +39,21 @@ export function weather (state = defaultState, action) {
           data: payload
         })
         nextState = {
-          channels: state.channels.slice(0),
+          channels: _.union(state.channels, [payload.id]),
           currentWeather: nextWeather,
           lastRefreshed: Date.now()
         }
       }
-      return Object.assign({}, nextState)
+      return Object.assign({}, nextState, {isLoading: false})
     }
     case weatherActions.FAILED_RECEIVING_WEATHER_DATA: {
       var nextState = Object.assign({}, state.currentWeather)
-      nextState[payload.channel] = Object.assign({}, nextState[payload.channel], {
+      nextState[payload.id] = Object.assign({}, nextState[payload.id], {
         isLoading: false,
         error: true
       })
 
-      return Object.assign({}, state, { currentWeather: nextState })
+      return Object.assign({}, state, { currentWeather: nextState, isLoading: false })
     }
     default:
       return state

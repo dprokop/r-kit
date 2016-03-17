@@ -67,9 +67,7 @@ export function fetchWeather (channel) {
     Services.OpenWeather
       .getWeatherForCity(channel)
       .then((data) => {
-        dispatch(receivedWeatherData(Object.assign({}, data, {
-          id: channel
-        })))
+        dispatch(receivedWeatherData(data))
       }).catch((error) => {
         dispatch(failedReceivingWeatherData(channel, error))
       })

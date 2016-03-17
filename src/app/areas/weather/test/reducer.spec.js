@@ -25,12 +25,12 @@ describe('Weather reducer', function () {
     }
   })
 
-  it('set loading state to true when requesting data for given id', function () {
+  it('sets weather\'s loading state to true when data requested', function () {
     var stateAfter = {
       channels: [1, 2, 5, 9],
       currentWeather: {
         1: {
-          isLoading: true
+          isLoading: false
         },
         2: {
           isLoading: true
@@ -39,52 +39,22 @@ describe('Weather reducer', function () {
           isLoading: true
         }
       },
-      lastRefreshed: timestamp
+      lastRefreshed: timestamp,
+      isLoading: true
     }
-
-    deepFreeze(stateBefore)
 
     var action = {
       type: 'REQUEST_WEATHER',
       payload: {
-        channel: 1
+        id: 10
       }
     }
+
+    deepFreeze(stateBefore)
 
     var result = weather(stateBefore, action)
 
     expect(result).toEqual(stateAfter)
-  })
-
-  it('sets new channel\'s isLoading state to true when data requested', function () {
-    var stateAfter = {
-      1: {
-        isLoading: false
-      },
-      2: {
-        isLoading: true
-      },
-      9: {
-        isLoading: true
-      },
-      3: {
-        isLoading: true
-      }
-    }
-
-    deepFreeze(stateBefore)
-
-    var action = {
-      type: 'REQUEST_WEATHER',
-      payload: {
-        channel: 3
-      }
-    }
-
-    var result = weather(stateBefore, action)
-
-    expect(result.currentWeather).toEqual(stateAfter)
-    expect(result.channels).toEqual([1, 2, 5, 9, 3])
   })
 
   it('sets loading state to false for given , payload to received data ', function () {
@@ -104,7 +74,8 @@ describe('Weather reducer', function () {
           isLoading: true
         }
       },
-      lastRefreshed: timestamp
+      lastRefreshed: timestamp,
+      isLoading: false
     }
 
     deepFreeze(stateBefore)
@@ -121,33 +92,34 @@ describe('Weather reducer', function () {
     expect(result).toEqual(stateAfter)
   })
 
-  it('removes id from channels and data from currentWeather if wrong id provided', function () {
+  it('sets loading state to false when failed receiving data', function () {
     var stateAfter = {
-      channels: [1, 2, 5],
+      channels: [1, 2, 5, 9],
       currentWeather: {
         1: {
           isLoading: false
         },
         2: {
+          isLoading: false,
+          error: true
+        },
+        9: {
           isLoading: true
         }
       },
-      lastRefreshed: timestamp
+      lastRefreshed: timestamp,
+      isLoading: false
     }
 
     deepFreeze(stateBefore)
 
     var action = {
-      type: 'RECEIVED_WEATHER_DATA',
+      type: 'FAILED_RECEIVING_WEATHER_DATA',
       payload: {
-        cod: 404,
-        message: 'Error message',
-        id: 9
+        id: 2
       }
     }
-
     var result = weather(stateBefore, action)
-
     expect(result).toEqual(stateAfter)
   })
 })
