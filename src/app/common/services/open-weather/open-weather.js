@@ -14,9 +14,8 @@ class WeatherService {
   getWeatherForCity (city) {
     console.log(`Fetching ${city} weather`)
     var query = {}
-
-    if (!(typeof city === 'string' || typeof city === 'number')) {
-      throw new TypeError('City should be either string or number')
+    if (!(typeof city === 'string' || typeof city === 'number' || typeof city === 'object')) {
+      throw new TypeError('City should be either string, number or object')
     }
 
     if (typeof city === 'string') {
@@ -25,6 +24,10 @@ class WeatherService {
 
     if (typeof city === 'number') {
       query = Object.assign({}, query, { id: city })
+    }
+
+    if (typeof city === 'object') {
+      query = Object.assign({}, query, { lat: city.lat, lon: city.lon })
     }
 
     return this.requestApi('weather', query)
