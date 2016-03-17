@@ -45,7 +45,8 @@ module.exports = function (options) {
 
   var styleLoaders = [
     {
-      test: /main.scss$/,
+      test: /.scss$/,
+      exclude: /(node_modules)/,
       loader: settings.extractCss
         ? stylesETP.extract('style-loader', cssLoader + postcssLoader + sassLoader)
         : 'style-loader!' + cssLoader + postcssLoader + sassLoader
