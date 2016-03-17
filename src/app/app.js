@@ -14,10 +14,6 @@ class App {
     this.store = setupStore({})
 
     this.configureServices(AppSettings)
-
-    setTimeout(() => {
-      this.store.dispatch(fetchWeather(3085041))
-    }, 1000)
   }
 
   /**
