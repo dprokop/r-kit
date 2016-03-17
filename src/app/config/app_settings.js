@@ -7,6 +7,9 @@ export default {
     Sentry: {
       clientUrl: 'https://33b34862e1cc45f8b863662d9d9b7415@app.getsentry.com/69634',
       enabled: false
+    },
+    Geolocation: {
+      enabled: true
     }
   }
 }
