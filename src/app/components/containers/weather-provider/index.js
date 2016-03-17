@@ -23,6 +23,7 @@ var WeatherProvider = (Composed) => connect(mapStateToProps, mapDispatchToProps)
     render () {
       return (
               <Composed
+                  isLoading = {this.props.weather.isLoading}
                   channelsData={this.props.weather.currentWeather}
                   onChannelRefresh={this.props.onChannelRefresh}
                   onRefresh={ () => this.props.onRefresh(this.props.weather.channels) }

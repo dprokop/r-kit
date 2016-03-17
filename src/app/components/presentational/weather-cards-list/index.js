@@ -6,21 +6,38 @@ import _ from 'underscore'
 
 import Services from 'common/services'
 
-var WeatherCardsList = ({ children, channelsData, onChannelRefresh, onRefresh }) => {
+var WeatherCardsList = ({ isLoading, children, channelsData, onChannelRefresh, onRefresh }) => {
+  var loader = isLoading ? <span>Loading ...</span> : null
+
   var cards = _.map(_.keys(channelsData), (key) => {
-    var card, data
+    var card
+
+    var cardProps = {}
+    var data = channelsData[key].data
+
+    if (data) {
+      console.log(data.id)
+      cardProps = {
+        id: data.id,
+        title: data.name,
+        temperature: data.main.temp,
+        key: data.id,
+        error: data.error
+      }
+    }
+    if (isLoading) {
+      loader = <span>Loading...</span>
+    }
     if (channelsData[key].isLoading) {
-      card = <WeatherCard isLoading key={key} />
-    } else {
-      data = channelsData[key].data
+      cardProps['isLoading'] = true
+    }
+    if (data) {
       card = <WeatherCard
-                id={data.id}
-                title={data.name}
-                temperature={data.main.temp}
-                key={data.id}
-                error={channelsData[key].error}
-                onRefresh={ () => onChannelRefresh(data.id) }
-            />
+                  {...cardProps}
+                  onRefresh={ () => onChannelRefresh(data.id)}
+              />
+    } else {
+      card = null
     }
 
     return card
@@ -28,7 +45,7 @@ var WeatherCardsList = ({ children, channelsData, onChannelRefresh, onRefresh })
 
   return (
         <div>
-          <WeatherBackground />
+          {loader}
           {cards}
         </div>
     )

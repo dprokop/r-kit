@@ -1,31 +1,32 @@
 import { PropTypes } from 'react'
+import styles from './weather-card.scss'
 
 var WeatherCard = ({id, isLoading, title, temperature, error, onRefresh}) => {
-  var card
-  if (isLoading) {
-    card = (
-            <div className='demo-card-wide mdl-card mdl-shadow--2dp'>
-              <div className='mdl-spinner mdl-js-spinner is-active'></div>
-            </div>
-        )
-  } else {
-    card = (
-            <div className='mdl-card mdl-shadow--2dp'>
-                <div className='mdl-card__title'>
-                    <h2 className='mdl-card__title-text'>
-                        {title} / {temperature}
-                    </h2>
-                </div>
-                <div className='mdl-card__actions'>
-                    <button
-                        onClick = { onRefresh }
-                        className='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>
-                        <i className='material-icons'>refresh</i>
-                    </button>
-                </div>
-            </div>
-        )
-  }
+  var buttons = []
+
+  buttons.push(
+    <button
+      onClick = { onRefresh }
+      className='mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'>
+      <i className='material-icons'>refresh</i>
+    </button>)
+
+  var loader = isLoading ? <i className='material-icons'>event</i> : null
+
+  var card = (
+    <div className='weather-card mdl-card mdl-shadow--2dp'>
+      <div className='mdl-card__title'>
+        <h2 className='mdl-card__title-text'>
+          {title} / {temperature}
+        </h2>
+      </div>
+      <div className='mdl-card__actions mdl-card--border'>
+        {buttons}
+        <div className='mdl-layout-spacer'></div>
+        {loader}
+      </div>
+    </div>
+  )
 
   return card
 }
