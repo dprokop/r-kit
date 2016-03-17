@@ -1,9 +1,11 @@
 import OpenWeatherService from 'services/open-weather'
 import SentryClient from 'services/sentry-client'
+import Geolocation from 'services/geolocation'
 
 let Services = {
   OpenWeather: new OpenWeatherService(),
-  Sentry: new SentryClient()
+  Sentry: new SentryClient(),
+  Geolocation: new Geolocation()
 }
 
 export default Services
@@ -13,7 +15,11 @@ export function bootServices (config) {
     if (Services[key]) {
       if (config[key].enabled) {
         console.log(`\tBooting up ${key} service`)
-        Services[key].boot(config[key])
+        try {
+          Services[key].boot(config[key])
+        } catch (e) {
+          console.log(e)
+        }
       }
     } else {
       throw new Error(`${key} service is not defined`)
