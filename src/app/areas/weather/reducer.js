@@ -1,5 +1,7 @@
 /** @module weather/reducer */
 
+import AppSettings from 'app/config/app_settings'
+import Services from 'services'
 import * as weatherActions from './actions'
 import _ from 'underscore'
 
@@ -16,35 +18,51 @@ import _ from 'underscore'
 
 var defaultState = {
   channels: [],
-  currentWeather: {},
-  lastRefreshed: null
+  current: {},
+  forecast: {}
 }
 
-export function weather (state = defaultState, action) {
-  var payload = action.payload
+export default function weather (state = defaultState, action) {
+  return {
+    channels: channelsReducer(state.channels, action),
+    current: currentWeatherReducer(state.weather, action),
+    forecast: forecastReducer(state.forecast, action)
+  }
+}
 
+export function channelsReducer (state = defaultState.channels, action) {
+  var payload = action.payload
+  switch (action.type) {
+    case weatherActions.RECEIVED_WEATHER_DATA: {
+      var nextState = state.slice(0)
+      nextState.push(payload.id)
+      return nextState
+    }
+    default: {
+      return state
+    }
+  }
+}
+
+export function currentWeatherReducer (state = defaultState.current, action) {
+  var payload = action.payload
   switch (action.type) {
     case weatherActions.REQUEST_WEATHER: {
       return Object.assign({}, state, { isLoading: true })
     }
     case weatherActions.RECEIVED_WEATHER_DATA: {
       let nextState = {}
-
       if (payload.cod && parseInt(payload.cod) === 404) {
         nextState = Object.assign({})
       } else {
-        var nextWeather = Object.assign({}, state.currentWeather)
+        var nextWeather = Object.assign({}, state)
         nextWeather[payload.id] = Object.assign({}, {
           isLoading: false,
-          data: payload
+          data: payload,
+          icon: `${AppSettings.paths.images}/${Services.OpenWeather.getIcon(payload.weather[0].id)}`
         })
-        nextState = {
-          channels: _.union(state.channels, [payload.id]),
-          currentWeather: nextWeather,
-          lastRefreshed: Date.now()
-        }
       }
-      return Object.assign({}, nextState, {isLoading: false})
+      return Object.assign({}, nextWeather, {isLoading: false})
     }
     case weatherActions.FAILED_RECEIVING_WEATHER_DATA: {
       var nextState = Object.assign({}, state.currentWeather)
@@ -53,9 +71,17 @@ export function weather (state = defaultState, action) {
         error: true
       })
 
-      return Object.assign({}, state, { currentWeather: nextState, isLoading: false })
+      return Object.assign({}, state, nextState)
     }
     default:
       return state
+  }
+}
+
+export function forecastReducer (state = defaultState.forecast, action) {
+  switch (action.type) {
+    default: {
+      return state
+    }
   }
 }

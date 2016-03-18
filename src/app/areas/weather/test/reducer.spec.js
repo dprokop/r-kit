@@ -1,45 +1,52 @@
 /* global describe, beforeEach, it, expect */
 
 import deepFreeze from 'deep-freeze'
-import { weather } from '../reducer'
+import { channelsReducer, currentWeatherReducer, forecastReducer } from '../reducer'
 
-describe('Weather reducer', function () {
+describe('Weather channels reducer', function () {
+  it('adds channel to channels list when data received', function () {
+    var stateBefore = [1, 2, 3]
+    var stateAfter = [1, 2, 3, 4]
+    var action = {
+      type: 'RECEIVED_WEATHER_DATA',
+      payload: {
+        id: 4
+      }
+    }
+    deepFreeze(stateBefore)
+
+    var result = channelsReducer(stateBefore, action)
+    expect(result).toEqual(stateAfter)
+  })
+})
+
+describe('Current weather reducer', function () {
   var stateBefore
-  var timestamp = Date.now()
-
   beforeEach(function () {
     stateBefore = {
-      channels: [1, 2, 5, 9],
-      currentWeather: {
-        1: {
-          isLoading: false
-        },
-        2: {
-          isLoading: true
-        },
-        9: {
-          isLoading: true
-        }
+      1: {
+        isLoading: false
       },
-      lastRefreshed: timestamp
+      2: {
+        isLoading: true
+      },
+      9: {
+        isLoading: true
+      }
     }
   })
 
-  it('sets weather\'s loading state to true when data requested', function () {
+  it('sets current weather\'s loading state to true when data requested', function () {
     var stateAfter = {
-      channels: [1, 2, 5, 9],
-      currentWeather: {
-        1: {
-          isLoading: false
-        },
-        2: {
-          isLoading: true
-        },
-        9: {
-          isLoading: true
-        }
+      1: {
+        isLoading: false
       },
-      lastRefreshed: timestamp,
+      2: {
+        isLoading: true
+      },
+      9: {
+        isLoading: true
+      },
       isLoading: true
     }
 
@@ -52,30 +59,30 @@ describe('Weather reducer', function () {
 
     deepFreeze(stateBefore)
 
-    var result = weather(stateBefore, action)
+    var result = currentWeatherReducer(stateBefore, action)
 
     expect(result).toEqual(stateAfter)
   })
 
-  it('sets loading state to false for given , payload to received data ', function () {
+  it('sets loading state to false for given id when data received', function () {
+    deepFreeze(stateBefore)
+
+    var action = {
+      type: 'RECEIVED_WEATHER_DATA',
+      payload: {
+        id: 2,
+        weather: [ {id: 800} ]
+      }
+    }
+
+    var result = currentWeatherReducer(stateBefore, action)
+    expect(result['2'].isLoading).toBeFalsy()
+  })
+
+  it('sets data state to payload for given id when data received', function () {
     var stateAfter = {
-      channels: [1, 2, 5, 9],
-      currentWeather: {
-        1: {
-          isLoading: false
-        },
-        2: {
-          isLoading: false,
-          data: {
-            id: 2
-          }
-        },
-        9: {
-          isLoading: true
-        }
-      },
-      lastRefreshed: timestamp,
-      isLoading: false
+      id: 2,
+      weather: [ {id: 800} ]
     }
 
     deepFreeze(stateBefore)
@@ -83,34 +90,16 @@ describe('Weather reducer', function () {
     var action = {
       type: 'RECEIVED_WEATHER_DATA',
       payload: {
-        id: 2
+        id: 2,
+        weather: [ {id: 800} ]
       }
     }
 
-    var result = weather(stateBefore, action)
-    result.lastRefreshed = timestamp
-    expect(result).toEqual(stateAfter)
+    var result = currentWeatherReducer(stateBefore, action)
+    expect(result['2'].data).toEqual(stateAfter)
   })
 
-  it('sets loading state to false when failed receiving data', function () {
-    var stateAfter = {
-      channels: [1, 2, 5, 9],
-      currentWeather: {
-        1: {
-          isLoading: false
-        },
-        2: {
-          isLoading: false,
-          error: true
-        },
-        9: {
-          isLoading: true
-        }
-      },
-      lastRefreshed: timestamp,
-      isLoading: false
-    }
-
+  it('sets loading state to false, error to true when failed receiving data', function () {
     deepFreeze(stateBefore)
 
     var action = {
@@ -119,7 +108,8 @@ describe('Weather reducer', function () {
         id: 2
       }
     }
-    var result = weather(stateBefore, action)
-    expect(result).toEqual(stateAfter)
+    var result = currentWeatherReducer(stateBefore, action)
+    expect(result['2'].isLoading).toBeFalsy()
+    expect(result['2'].error).toBeTruthy()
   })
 })
