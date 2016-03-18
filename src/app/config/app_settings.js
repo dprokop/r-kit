@@ -1,4 +1,8 @@
 export default {
+  paths: {
+    images: 'static/images',
+    fonts: 'static/fonts'
+  },
   services: {
     OpenWeather: {
       appId: '6058764b2c589f639754a906a4dfb561',

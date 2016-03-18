@@ -6,19 +6,19 @@ import _ from 'underscore'
 
 import Services from 'common/services'
 
-var WeatherCardsList = ({ isLoading, children, channelsData, onChannelRefresh, onRefresh }) => {
+var WeatherCardsList = ({ isLoading, children, current, forecast, onChannelRefresh }) => {
   var loader = isLoading ? <span>Loading ...</span> : null
 
-  var cards = _.map(_.keys(channelsData), (key) => {
+  var cards = _.map(_.keys(current), (key) => {
     var card
 
     var cardProps = {}
-    var data = channelsData[key].data
+    var data = current[key].data
 
     if (data) {
-      console.log(data.id)
       cardProps = {
         id: data.id,
+        icon: current[key].icon,
         title: data.name,
         temperature: data.main.temp,
         key: data.id,
@@ -28,7 +28,7 @@ var WeatherCardsList = ({ isLoading, children, channelsData, onChannelRefresh, o
     if (isLoading) {
       loader = <span>Loading...</span>
     }
-    if (channelsData[key].isLoading) {
+    if (current[key].isLoading) {
       cardProps['isLoading'] = true
     }
     if (data) {
@@ -52,7 +52,7 @@ var WeatherCardsList = ({ isLoading, children, channelsData, onChannelRefresh, o
 }
 
 WeatherCardsList.propTyp = {
-  channelsData: PropTypes.object,
+  current: PropTypes.object,
   onRefresh: PropTypes.func,
   onChannelRefresh: PropTypes.func
 }

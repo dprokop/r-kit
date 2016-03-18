@@ -1,7 +1,7 @@
 import { PropTypes } from 'react'
 import styles from './weather-card.scss'
 
-var WeatherCard = ({id, isLoading, title, temperature, error, onRefresh}) => {
+var WeatherCard = ({id, icon, isLoading, title, temperature, error, onRefresh}) => {
   var buttons = []
 
   buttons.push(
@@ -16,6 +16,7 @@ var WeatherCard = ({id, isLoading, title, temperature, error, onRefresh}) => {
   var card = (
     <div className='weather-card mdl-card mdl-shadow--2dp'>
       <div className='mdl-card__title'>
+        <img src={icon}/>
         <h2 className='mdl-card__title-text'>
           {title} / {temperature}
         </h2>

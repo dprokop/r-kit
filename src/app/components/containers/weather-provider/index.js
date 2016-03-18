@@ -7,7 +7,8 @@ import { fetchWeather, refreshChannels } from 'areas/weather/actions'
 
 const mapStateToProps = (state) => {
   return {
-    weather: state.weather
+    currentWeather: state.weather.current,
+    forecast: state.weather.forecast
   }
 }
 
@@ -21,10 +22,12 @@ const mapDispatchToProps = (dispatch) => {
 var WeatherProvider = (Composed) => connect(mapStateToProps, mapDispatchToProps)(
   class WeatherProvider extends Component {
     render () {
+      console.log(this.props.currentWeather)
       return (
               <Composed
-                  isLoading = {this.props.weather.isLoading}
-                  channelsData={this.props.weather.currentWeather}
+                  isLoading = {this.props.currentWeather.isLoading}
+                  current={this.props.currentWeather}
+                  forecast={this.props.forecast}
                   onChannelRefresh={this.props.onChannelRefresh}
                   onRefresh={ () => this.props.onRefresh(this.props.weather.channels) }
               />
