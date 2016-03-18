@@ -13,24 +13,8 @@ class WeatherService {
     this.config = Object.assign({}, this.config, config)
   }
 
-  getWeatherForCity (city) {
-    console.log(`Fetching ${city} weather`)
-    var query = {}
-    if (!(typeof city === 'string' || typeof city === 'number' || typeof city === 'object')) {
-      throw new TypeError('City should be either string, number or object')
-    }
-
-    if (typeof city === 'string') {
-      query = Object.assign({}, query, { q: city })
-    }
-
-    if (typeof city === 'number') {
-      query = Object.assign({}, query, { id: city })
-    }
-
-    if (typeof city === 'object') {
-      query = Object.assign({}, query, { lat: city.lat, lon: city.lon })
-    }
+  getWeatherForLocation (location) {
+    var query = this.getLocationQuery(location)
 
     return this.requestApi('weather', query)
   }
@@ -60,6 +44,28 @@ class WeatherService {
 
   getIcon (code) {
     return this.icons.get(code) ? this.icons.get(code) : 'default.svg'
+  }
+
+  getLocationQuery (location) {
+    var query = {}
+
+    if (!(typeof location === 'string' || typeof location === 'number' || typeof location === 'object')) {
+      throw new TypeError('City should be either string, number or object')
+    }
+
+    if (typeof location === 'string') {
+      query = Object.assign({}, query, { q: location })
+    }
+
+    if (typeof location === 'number') {
+      query = Object.assign({}, query, { id: location })
+    }
+
+    if (typeof location === 'object') {
+      query = Object.assign({}, query, { lat: location.lat, lon: location.lon })
+    }
+
+    return query
   }
 
   setupIconsMapping () {

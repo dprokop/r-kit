@@ -29,8 +29,34 @@ describe('Open weather service', function () {
     var result = service.getIcon(800)
     expect(result).toEqual('Sun.svg')
   })
+
   it('should return default icon file name for unknown weather code', function () {
     var result = service.getIcon(666)
     expect(result).toEqual('default.svg')
+  })
+
+  it('should build location query from name', function () {
+    var result = service.getLocationQuery('Cracow')
+
+    expect(result).toEqual({
+      q: 'Cracow'
+    })
+  })
+
+  it('should build location query from id number', function () {
+    var result = service.getLocationQuery(123)
+
+    expect(result).toEqual({
+      id: 123
+    })
+  })
+
+  it('should build location query from long/lat object', function () {
+    var result = service.getLocationQuery({lat: 1, lon: 2, data: 'data'})
+
+    expect(result).toEqual({
+      lat: 1,
+      lon: 2
+    })
   })
 })
