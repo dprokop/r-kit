@@ -24,4 +24,13 @@ describe('Open weather service', function () {
     })
     expect(result).toEqual('http://api.openweathermap.org/data/2.5/weather?q=Cracow,PL&amp;id=123123&appid=123123')
   })
+
+  it('should return icon file name for given weather code', function () {
+    var result = service.getIcon(800)
+    expect(result).toEqual('Sun.svg')
+  })
+  it('should return default icon file name for unknown weather code', function () {
+    var result = service.getIcon(666)
+    expect(result).toEqual('default.svg')
+  })
 })

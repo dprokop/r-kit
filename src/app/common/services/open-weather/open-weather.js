@@ -5,6 +5,8 @@ class WeatherService {
     this.config = {
       endpoint: 'http://api.openweathermap.org/data/2.5'
     }
+
+    this.setupIconsMapping()
   }
 
   boot (config) {
@@ -54,6 +56,15 @@ class WeatherService {
     }).join('&amp;')
 
     return `${this.config.endpoint}/${area}?${queryString}&appid=${this.config.appId}`
+  }
+
+  getIcon (code) {
+    return this.icons.get(code) ? this.icons.get(code) : 'default.svg'
+  }
+
+  setupIconsMapping () {
+    this.icons = new Map()
+    this.icons.set(800, 'Sun.svg')
   }
 }
 
