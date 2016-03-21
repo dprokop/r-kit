@@ -2,6 +2,7 @@ var path = require('path')
 var webpack = require('webpack')
 var autoprefixer = require('autoprefixer')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var WebpackNotifierPlugin = require('webpack-notifier');
 
 var env = {
   DEV: 'development',
@@ -9,7 +10,8 @@ var env = {
 }
 var defaultOptions = {
   env: process.env.NODE_ENV,
-  autoprefixerBrowsers: ['last 2 versions']
+  autoprefixerBrowsers: ['last 2 versions'],
+  notify: false
 }
 
 module.exports = function (options) {
@@ -17,7 +19,7 @@ module.exports = function (options) {
   var stylesETP = new ExtractTextPlugin('main.css', {allChunks: true})
   var vendorStylesETP = new ExtractTextPlugin('vendors.css', {allChunks: true})
   var envPlugin = new webpack.DefinePlugin({
-    'process.env.NODE_ENV': JSON.stringify(defaultOptions.env)
+    'process.env.NODE_ENV': JSON.stringify(defaultOptions.env)  
   })
 
   var jsLoaders = [
@@ -69,6 +71,10 @@ module.exports = function (options) {
         except: settings.uglifyMangleExcept ? settings.uglifyMangleExcept : []
       }
     }))
+  }
+
+  if(settings.notify){
+    plugins.push(new WebpackNotifierPlugin())
   }
 
   return {
