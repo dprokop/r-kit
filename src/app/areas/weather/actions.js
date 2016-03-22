@@ -6,6 +6,20 @@ import _ from 'underscore'
 =              Action types             =
 =======================================*/
 /**
+ * SET_UNIT action type
+ * @constant
+ * @type {string}
+ */
+export const SET_UNIT = 'SET_UNIT'
+
+/**
+ * UPDATE_UNIT action type
+ * @constant
+ * @type {string}
+ */
+export const UPDATE_UNIT = 'UPDATE_UNIT'
+
+/**
  * REQUEST_WEATHER action type
  * @constant
  * @type {string}
@@ -38,6 +52,36 @@ export const FAILED_RECEIVING_WEATHER_DATA = 'FAILED_RECEIVING_WEATHER_DATA'
 /*=======================================
 =            Action creators            =
 =======================================*/
+
+/** @module weather/actions */
+
+/**
+ * SET_UNIT action creator
+ * @param {(string)} Name or id of the city
+ * @return {@link SET_UNIT} action object
+ */
+export function setUnit (unit, channels) {
+  return (dispatch, getState) => {
+    Services.OpenWeather.setUnit(unit)
+    dispatch(updateUnit(unit))
+    var { weather: { channels: channels } } = getState()
+    dispatch(refreshChannels(channels))
+  }
+}
+
+/**
+ * UPDATE_UNIT action creator
+ * @param {(string)} Name or id of the city
+ * @return {@link UPDATE_UNIT} action object
+ */
+export function updateUnit (unit, channels) {
+  return {
+    type: UPDATE_UNIT,
+    payload: {
+      unit: unit
+    }
+  }
+}
 
 /** @module weather/actions */
 

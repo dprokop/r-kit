@@ -18,6 +18,24 @@ describe('Weather channels reducer', function () {
     var result = channelsReducer(stateBefore, action)
     expect(result).toEqual(stateAfter)
   })
+
+  it('does not duplicate channels in channels\' list when data received', function () {
+    var stateBefore = [1, 2, 3]
+    var stateAfter = [1, 2, 3, 4]
+    var action = {
+      type: 'RECEIVED_WEATHER_DATA',
+      payload: {
+        id: 4
+      }
+    }
+    deepFreeze(stateBefore)
+
+    var result1 = channelsReducer(stateBefore, action)
+    deepFreeze(result1)
+    var result2 = channelsReducer(result1, action)
+
+    expect(result2).toEqual(stateAfter)
+  })
 })
 
 describe('Current weather reducer', function () {

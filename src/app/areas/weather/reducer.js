@@ -19,14 +19,16 @@ import _ from 'underscore'
 var defaultState = {
   channels: [],
   current: {},
-  forecast: {}
+  forecast: {},
+  config: {}
 }
 
 export default function weather (state = defaultState, action) {
   return {
     channels: channelsReducer(state.channels, action),
     current: currentWeatherReducer(state.weather, action),
-    forecast: forecastReducer(state.forecast, action)
+    forecast: forecastReducer(state.forecast, action),
+    config: weatherConfigReducer(state.config, action)
   }
 }
 
@@ -35,8 +37,8 @@ export function channelsReducer (state = defaultState.channels, action) {
   switch (action.type) {
     case weatherActions.RECEIVED_WEATHER_DATA: {
       var nextState = state.slice(0)
-      nextState.push(payload.id)
-      return nextState
+      // nextState.push(payload.id)
+      return _.union(nextState, [payload.id])
     }
     default: {
       return state
@@ -80,6 +82,17 @@ export function currentWeatherReducer (state = defaultState.current, action) {
 
 export function forecastReducer (state = defaultState.forecast, action) {
   switch (action.type) {
+    default: {
+      return state
+    }
+  }
+}
+
+export function weatherConfigReducer (state = defaultState.config, action) {
+  var payload = action.payload
+  switch (action.type) {
+    case weatherActions.UPDATE_UNIT:
+      return Object.assign({}, state, { unit: payload.unit })
     default: {
       return state
     }
