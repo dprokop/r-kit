@@ -86,7 +86,6 @@ class WeatherService {
 
   setUnit (unit) {
     this.config.unit = unit
-    console.log(this.config)
   }
 }
 
