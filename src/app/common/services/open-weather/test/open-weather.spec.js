@@ -14,7 +14,12 @@ describe('Open weather service', function () {
   })
 
   it('should boot with provided config', function () {
-    expect(service.config).toEqual(config)
+    var result = {
+      endpoint: 'http://api.openweathermap.org/data/2.5',
+      appId: 123123,
+      unit: 'metric'
+    }
+    expect(service.config).toEqual(result)
   })
 
   it('should build a valid url', function () {
@@ -22,7 +27,7 @@ describe('Open weather service', function () {
       q: 'Cracow,PL',
       id: '123123'
     })
-    expect(result).toEqual('http://api.openweathermap.org/data/2.5/weather?q=Cracow,PL&amp;id=123123&appid=123123')
+    expect(result).toEqual('http://api.openweathermap.org/data/2.5/weather?q=Cracow,PL&amp;id=123123&appid=123123&units=metric')
   })
 
   it('should return icon file name for given weather code', function () {

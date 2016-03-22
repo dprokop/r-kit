@@ -3,7 +3,8 @@ import fetch from 'isomorphic-fetch'
 class WeatherService {
   constructor () {
     this.config = {
-      endpoint: 'http://api.openweathermap.org/data/2.5'
+      endpoint: 'http://api.openweathermap.org/data/2.5',
+      unit: 'metric'
     }
 
     this.setupIconsMapping()
@@ -17,6 +18,12 @@ class WeatherService {
     var query = this.getLocationQuery(location)
 
     return this.requestApi('weather', query)
+  }
+
+  getForecastForLocation (location) {
+    var query = this.getLocationQuery(location)
+
+    return this.requestApi('forecast', query)
   }
 
   requestApi (area, params) {
@@ -37,9 +44,10 @@ class WeatherService {
   getUrl (area, params) {
     var queryString = Object.keys(params).map((queryKey) => {
       return queryKey + '=' + params[queryKey]
-    }).join('&amp;')
+    }).join('&amp;').concat(`&appid=${this.config.appId}&units=${this.config.unit}`)
 
-    return `${this.config.endpoint}/${area}?${queryString}&appid=${this.config.appId}`
+    var url = `${this.config.endpoint}/${area}?${queryString}`
+    return url
   }
 
   getIcon (code) {
@@ -48,8 +56,11 @@ class WeatherService {
 
   getLocationQuery (location) {
     var query = {}
+    var argType = (
+      typeof location === 'string' || typeof location === 'number' || typeof location === 'object'
+    )
 
-    if (!(typeof location === 'string' || typeof location === 'number' || typeof location === 'object')) {
+    if (!argType) {
       throw new TypeError('City should be either string, number or object')
     }
 
@@ -71,6 +82,11 @@ class WeatherService {
   setupIconsMapping () {
     this.icons = new Map()
     this.icons.set(800, 'Sun.svg')
+  }
+
+  setUnit (unit) {
+    this.config.unit = unit
+    console.log(this.config)
   }
 }
 
