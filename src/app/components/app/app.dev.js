@@ -2,6 +2,7 @@ import { Component } from 'react'
 import { Provider } from 'react-redux'
 import Normalize from 'normalize.css'
 import WeatherProvider from 'components/containers/weather-provider'
+import ConfigProvider from 'components/containers/config-provider'
 import GeolocationProvider from 'components/containers/geolocation-provider'
 import WeatherCardsList from 'components/presentational/weather-cards-list'
 import DevTools from 'components/containers/dev-tools'
@@ -14,6 +15,7 @@ var AppComponent = ({store}) => {
       <div className='mdl-grid'>
         <div className='mdl-cell mdl-cell--8-col-tablet mdl-cell--4-col'>
             <GeolocationProvider />
+            <ConfigProvider />
             <WeatherComponent />
             <DevTools />
         </div>

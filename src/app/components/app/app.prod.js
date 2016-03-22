@@ -12,7 +12,9 @@ var AppComponent = ({store}) => {
     <Provider store={store}>
       <div className='mdl-grid'>
         <div className='mdl-cell mdl-cell--8-col-tablet mdl-cell--4-col'>
-            <WeatherComponent />
+          <GeolocationProvider />
+          <ConfigProvider />
+          <WeatherComponent />
         </div>
       </div>
 
