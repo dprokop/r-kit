@@ -26,7 +26,7 @@ var defaultState = {
 export default function weather (state = defaultState, action) {
   return {
     channels: channelsReducer(state.channels, action),
-    current: currentWeatherReducer(state.weather, action),
+    current: currentWeatherReducer(state.current, action),
     forecast: forecastReducer(state.forecast, action),
     config: weatherConfigReducer(state.config, action)
   }
@@ -37,7 +37,6 @@ export function channelsReducer (state = defaultState.channels, action) {
   switch (action.type) {
     case weatherActions.RECEIVED_WEATHER_DATA: {
       var nextState = state.slice(0)
-      // nextState.push(payload.id)
       return _.union(nextState, [payload.id])
     }
     default: {
@@ -57,14 +56,14 @@ export function currentWeatherReducer (state = defaultState.current, action) {
       if (payload.cod && parseInt(payload.cod) === 404) {
         nextState = Object.assign({})
       } else {
-        var nextWeather = Object.assign({}, state)
-        nextWeather[payload.id] = Object.assign({}, {
+        nextState = Object.assign({}, state)
+        nextState[payload.id] = Object.assign({}, {
           isLoading: false,
           data: payload,
           icon: `${AppSettings.paths.images}/${Services.OpenWeather.getIcon(payload.weather[0].id)}`
         })
       }
-      return Object.assign({}, nextWeather, {isLoading: false})
+      return Object.assign({}, nextState, {isLoading: false})
     }
     case weatherActions.FAILED_RECEIVING_WEATHER_DATA: {
       var nextState = Object.assign({}, state.currentWeather)

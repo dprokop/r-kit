@@ -149,8 +149,9 @@ export function failedReceivingWeatherData (channel, error) {
  * REFRESH_CHANNELS action creator
  * @return {@link REFRESH_CHANNELS} action object
  */
-export function refreshChannels (channels) {
-  return (dispatch) => {
+export function refreshChannels () {
+  return (dispatch, getState) => {
+    var { weather: { channels: channels } } = getState()
     _.each(channels, (id) => {
       dispatch(fetchWeather(id))
     })

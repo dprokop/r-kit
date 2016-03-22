@@ -22,7 +22,6 @@ const mapDispatchToProps = (dispatch) => {
 var WeatherProvider = (Composed) => connect(mapStateToProps, mapDispatchToProps)(
   class WeatherProvider extends Component {
     render () {
-      console.log(this.props.currentWeather)
       return (
               <Composed
                   isLoading = {this.props.currentWeather.isLoading}

@@ -114,7 +114,26 @@ describe('Current weather reducer', function () {
     }
 
     var result = currentWeatherReducer(stateBefore, action)
-    expect(result['2'].data).toEqual(stateAfter)
+    console.log(result)
+    action = {
+      type: 'RECEIVED_WEATHER_DATA',
+      payload: {
+        id: 3,
+        weather: [ {id: 900} ]
+      }
+    }
+    deepFreeze(result)
+
+    var result1 = currentWeatherReducer(result, action)
+
+    expect(result1['2'].data).toEqual({
+      id: 2,
+      weather: [ {id: 800} ]
+    })
+    expect(result1['3'].data).toEqual({
+      id: 3,
+      weather: [ {id: 900} ]
+    })
   })
 
   it('sets loading state to false, error to true when failed receiving data', function () {
