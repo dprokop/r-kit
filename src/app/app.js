@@ -12,8 +12,6 @@ class App {
    */
   constructor (initialState) {
     this.store = setupStore({})
-
-    this.configureServices(AppSettings)
   }
 
   /**
@@ -21,7 +19,11 @@ class App {
    */
   configureServices () {
     console.log('Booting up services')
-    bootServices(AppSettings.services)
+    return bootServices(AppSettings.services)
+  }
+
+  start () {
+    return this.configureServices(AppSettings)
   }
 }
 

@@ -11,7 +11,11 @@ class WeatherService {
   }
 
   boot (config) {
-    this.config = Object.assign({}, this.config, config)
+    console.log('boot weather')
+    return new Promise((resolve, reject) => {
+      this.config = Object.assign({}, this.config, config)
+      resolve(this)
+    })
   }
 
   getWeatherForLocation (location) {

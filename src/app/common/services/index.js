@@ -11,18 +11,35 @@ let Services = {
 export default Services
 
 export function bootServices (config) {
+  // Object.keys(config).forEach((key) => {
+  //   if (Services[key]) {
+  //     if (config[key].enabled) {
+  //       console.log(`\tBooting up ${key} service`)
+  //       try {
+  //         Services[key].boot(config[key])
+  //       } catch (e) {
+  //         console.log(e)
+  //       }
+  //     }
+  //   } else {
+  //     throw new Error(`${key} service is not defined`)
+  //   }
+  // })
+  var promises = []
   Object.keys(config).forEach((key) => {
-    if (Services[key]) {
-      if (config[key].enabled) {
+    if (config[key].enabled) {
+      if (Services[key] && Services[key].boot !== 'undefined ') {
         console.log(`\tBooting up ${key} service`)
         try {
-          Services[key].boot(config[key])
+          promises.push(Services[key].boot(config[key]))
         } catch (e) {
           console.log(e)
         }
+      } else {
+        throw new Error(`${key} service is not defined`)
       }
-    } else {
-      throw new Error(`${key} service is not defined`)
     }
   })
+
+  return Promise.all(promises)
 }

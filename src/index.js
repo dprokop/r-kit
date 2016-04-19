@@ -6,4 +6,6 @@ import AppComponent from 'components/app'
 
 var app = new App()
 
-ReactDOM.render(<AppComponent store={app.store}/>, document.getElementById('appRoot'))
+app.start().then(() => {
+  ReactDOM.render(<AppComponent store={app.store}/>, document.getElementById('appRoot'))
+})
